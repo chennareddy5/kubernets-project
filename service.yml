@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-k8s-demo-service
+  labels:
+    app: jenkins-k8s-demo
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 31200
+    protocol: TCP
+  selector:
+    app: jenkins-k8s-demo
+    type: LoadBlancer
+

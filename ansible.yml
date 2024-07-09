@@ -1,0 +1,25 @@
+---
+- name: Deploy Jenkins Kubernetes Demo
+  hosts: all  # Assuming you run this playbook from the control node where kubectl is configured
+
+  tasks:
+    - name: Delete Old Deployment and Service
+      block:
+        - name: Delete Old Deployment
+          command: kubectl delete -f /home/ubuntu/deployment.yml
+          ignore_errors: yes  # Ignore errors if the deployment does not exist or has already been deleted
+
+        - name: Delete Old Service
+          command: kubectl delete -f /home/ubuntu/service.yml
+          ignore_errors: yes  # Ignore errors if the service does not exist or has already been deleted
+
+      - name: Create New Deployment and Service
+        block:
+          - name: Create Deployment
+            command: kubectl apply -f /home/ubuntu/deployment.yml
+            register: deployment_result
+          
+          - name: Create Service
+            command: kubectl apply -f /home/ubuntu/service.yml
+            register: service_result
+
